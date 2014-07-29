@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: cp1252 -*-
-
+#testanto a batata do git
 import view
 import model
 import viewCadastros
