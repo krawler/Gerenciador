@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: cp1252 -*-
-#testanto a batata do git
+
 import view
 import model
 import viewCadastros
@@ -99,19 +99,19 @@ def valida_numero(action, index, value_if_allowed,
     else:
         return True
     
-def excluir(pai, avo, dados):
+def excluir(retorno, pai, avo, dados):
     item = dados["classe"](dados)
     item.excluir(dados["id"])
     del item
     view.fecha_tela(pai)
-    lista_forn(avo)
+    globals()[retorno](avo)                  #chamar funcao usando o conteudo de string, pq pode ser lista_clie,lista_forn,lista_prod, etc
 
-def alterar(pai, avo, dados):
+def alterar(retorno, pai, avo, dados):
     item = dados["classe"](dados)
     item.alterar(dados["id"])
     del item
     view.fecha_tela(pai)
-    lista_forn(avo)
+    globals()[retorno](avo)
     
 def cadastrar(pai,dados):
     novo = dados["classe"](dados)
@@ -138,7 +138,7 @@ def lista_forn(root):
 
 def lista_clie(root):
     cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residêncial', 'Telefone Comercial']
-    dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=1','')
+    dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
     viewListagem.tela_lista_clie(root,cabecalhos, dados)
 
            

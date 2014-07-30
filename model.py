@@ -48,6 +48,13 @@ class pessoa:
     def salvar(self):
         return controller.grava('pessoas',[self.nome, self.email, self.endereco, self.tel_cel, self.tel_res, self.tel_com, self.tipo])
 
+    def alterar(self,ident):
+        controller.altera('pessoas','nome = "'+self.nome+'", email="'+str(self.email)+'", endereco="'+str(self.endereco)+'", tel_cel="'+str(self.tel_cel)+
+                                    '", tel_res="'+str(self.tel_res)+'", tel_com="'+str(self.tel_com)+'"','  id='+str(ident))
+        
+    def excluir(self,ident):
+        controller.exclui('pessoas',' id='+str(ident))
+
 class vendedor(pessoa):
     comissoes = []
 
