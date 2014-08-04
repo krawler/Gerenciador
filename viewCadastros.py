@@ -12,7 +12,7 @@ from Tkinter import *
 
 def inclui_comissao(comissoes):
     tela = Toplevel()
-    tela.title("Gerenciador - Comissıes")
+    tela.title("Gerenciador - Comiss√µes")
     dados = controller.busca("id, nome", "fornecedores","","")
     x = 0
     entradas = []
@@ -48,7 +48,7 @@ def tela_cad_forn(root):
     nome_forn = Entry(frame_cad_forn, width=50)
     nome_forn.grid(row=0, column = 2, columnspan=3)
 
-    campo2 = Label(frame_cad_forn, text="DuraÁ„o da campanha:")
+    campo2 = Label(frame_cad_forn, text="Dura√ß√£o da campanha:")
     campo2.grid(row = 1, column = 0,padx = 10, columnspan=2)
 
     valida_num = (root.register(controller.valida_numero),'%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W') #permitir apenas numero no duracao da campanha
@@ -101,7 +101,7 @@ def tela_cad_clie(root):
     email = Entry(frame_cad_clie, width=50)
     email.grid(row=4, column = 2, columnspan=3)
 
-    campo6 = Label(frame_cad_clie, text="EndereÁo:")
+    campo6 = Label(frame_cad_clie, text="Endere√ßo:")
     campo6.grid(row = 5, column = 0,padx = 10, columnspan=2)
 
     endereco = Entry(frame_cad_clie, width=50)
@@ -155,13 +155,13 @@ def tela_cad_vend(root):
     email = Entry(frame_cad_vend, width=50)
     email.grid(row=4, column = 2, columnspan=3)
 
-    campo6 = Label(frame_cad_vend, text="EndereÁo:")
+    campo6 = Label(frame_cad_vend, text="Endere√ßo:")
     campo6.grid(row = 5, column = 0,padx = 10, columnspan=2)
 
     endereco = Entry(frame_cad_vend, width=50)
     endereco.grid(row=5, column = 2, columnspan=3)
 
-    campo7 = Label(frame_cad_vend, text="Comissıes:")
+    campo7 = Label(frame_cad_vend, text="Comiss√µes:")
     campo7.grid(row = 6, column = 0,padx = 10, columnspan=2)
 
     comissoes = []
@@ -187,7 +187,7 @@ def tela_cad_prod(root):
 
     valida_num = (root.register(controller.valida_numero),'%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W') #permitir apenas numero no duracao da campanha
 
-    campo1 = Label(frame_cad_prod, text="CÛdigo:")
+    campo1 = Label(frame_cad_prod, text="C√≥digo:")
     campo1.grid(row = 0, column = 1,padx = 10, sticky=E)
 
     cod_prod = Entry(frame_cad_prod, width=50, validate = 'key', validatecommand = valida_num)
@@ -213,19 +213,19 @@ def tela_cad_prod(root):
     qnt_prod = Entry(frame_cad_prod, width=50, validate = 'key', validatecommand = valida_num)
     qnt_prod.grid(row=2, column = 2, columnspan=3)
 
-    campo4 = Label(frame_cad_prod, text="DescriÁ„o:")
+    campo4 = Label(frame_cad_prod, text="Descri√ß√£o:")
     campo4.grid(row = 3, column = 0,padx = 10, columnspan=2)
 
     desc_prod = Entry(frame_cad_prod, width=50)
     desc_prod.grid(row=3, column = 2, columnspan=3)
 
-    campo5 = Label(frame_cad_prod, text="PreÁo compra:")
+    campo5 = Label(frame_cad_prod, text="Pre√ßo compra:")
     campo5.grid(row = 4, column = 0,padx = 10, columnspan=2)
 
     pcompra = Entry(frame_cad_prod, width=50)
     pcompra.grid(row=4, column = 2, columnspan=3)
 
-    campo6 = Label(frame_cad_prod, text="PreÁo venda:")
+    campo6 = Label(frame_cad_prod, text="Pre√ßo venda:")
     campo6.grid(row = 5, column = 0,padx = 10, columnspan=2)
 
     pvenda = Entry(frame_cad_prod, width=50)

@@ -44,7 +44,7 @@ def mostra_dados_clie(event, tabela,pai):
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
-    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer funÁ„o
+    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer fun√ß√£o
     filhos[3].insert(0, valores[5])     #tel res                        #carrega os valores da consulta do banco
     filhos[5].insert(0, valores[4])     #tel cel
     filhos[7].insert(0, valores[6])     #tel com
@@ -73,7 +73,7 @@ def mostra_dados_vend(event, tabela, pai):
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
-    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer funÁ„o
+    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer fun√ß√£o
     filhos[3].insert(0, valores[5])     #tel res                        #carrega os valores da consulta do banco
     filhos[5].insert(0, valores[4])     #tel cel
     filhos[7].insert(0, valores[6])     #tel com

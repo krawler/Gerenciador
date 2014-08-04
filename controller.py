@@ -131,17 +131,17 @@ def cad_prod(root):
     viewCadastros.tela_cad_prod(root)
 
 def lista_forn(root):
-    cabecalhos = ['ID', 'Nome', u'Duração Campanha']
+    cabecalhos = ['ID', 'Nome', u'DuraÃ§Ã£o Campanha']
     dados = busca('*','fornecedores','','')
     viewListagem.tela_lista_forn(root,cabecalhos, dados)
 
 def lista_clie(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residêncial', 'Telefone Comercial']
+    cabecalhos = ['ID', 'Nome', 'Email', u'EndereÃ§o', 'Telefone Celular', u'Telefone residÃªncial', 'Telefone Comercial']
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
     viewListagem.tela_lista_clie(root,cabecalhos, dados)
 
 def lista_vend(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residêncial', 'Telefone Comercial']
+    cabecalhos = ['ID', 'Nome', 'Email', u'EndereÃ§o', 'Telefone Celular', u'Telefone residÃªncial', 'Telefone Comercial']
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com', 'pessoas', 'WHERE tipo=1','')
     viewListagem.tela_lista_vend(root,cabecalhos, dados)
 
