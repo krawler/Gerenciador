@@ -85,8 +85,7 @@ def exclui(tabela, condicao):
         view.popup_warning("Falha ao excluir dados!")
         return None
 
-def valida_numero(action, index, value_if_allowed,
-               prior_value, text, validation_type, trigger_type, widget_name):
+def valida_numero(action, index, value_if_allowed, prior_value, text, validation_type, trigger_type, widget_name):
     if int(action) == 1:
         if text in '0123456789.,':
             try:
@@ -98,7 +97,7 @@ def valida_numero(action, index, value_if_allowed,
             return False
     else:
         return True
-    
+
 def excluir(retorno, pai, avo, dados):
     item = dados["classe"](dados)
     item.excluir(dados["id"])
@@ -112,7 +111,7 @@ def alterar(retorno, pai, avo, dados):
     del item
     view.fecha_tela(pai)
     globals()[retorno](avo)
-    
+
 def cadastrar(pai,dados):
     novo = dados["classe"](dados)
     novo.salvar()
@@ -141,7 +140,13 @@ def lista_clie(root):
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
     viewListagem.tela_lista_clie(root,cabecalhos, dados)
 
-           
+def lista_vend(root):
+    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residêncial', 'Telefone Comercial']
+    dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com', 'pessoas', 'WHERE tipo=1','')
+    viewListagem.tela_lista_vend(root,cabecalhos, dados)
+
+
+
 def main():
     verifica_banco()
     view.tela_principal()
