@@ -10,10 +10,12 @@ from Tkinter import *
 
 #==============================================================================================================================================#
 
-def inclui_comissao(comissoes):
+def inclui_comissao(comissoes,novo):
     tela = Toplevel()
     tela.title("Gerenciador - Comissões")
     dados = controller.busca("id, nome", "fornecedores","","")
+    if (novo > 0) :
+            valores_antigos = controller.busca("comissao","comissoes"," WHERE vendedor_id ="+str(novo),"")
     x = 0
     entradas = []
     for dado in dados:
@@ -22,7 +24,12 @@ def inclui_comissao(comissoes):
         comissoes.append([dado[0]])
         valida_num = (tela.register(controller.valida_numero),'%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         entradas.append(Entry(tela,width=20,validate = 'key', validatecommand = valida_num))
-        entradas[x].insert(0,"0")
+        if (novo > 0):
+            valor = str(valores_antigos[x][0])
+            for index in range(len(valor)):                                 #necessario por causa da validacao do campo 'duracao campanha'
+                entradas[x].insert(index, valor[index]) 
+        else:
+            entradas[x].insert(0,"0")
         entradas[x].grid(row = x, column =1)
         label2= Label(tela, text="%")
         label2.grid(row = x , column = 2, sticky=W)
@@ -165,7 +172,7 @@ def tela_cad_vend(root):
     campo7.grid(row = 6, column = 0,padx = 10, columnspan=2)
 
     comissoes = []
-    botao_incluir_comis = Button(frame_cad_vend, text="Incluir", command= lambda: inclui_comissao(comissoes))
+    botao_incluir_comis = Button(frame_cad_vend, text="Incluir", command= lambda: inclui_comissao(comissoes,0)) #segundo par. de inclui_comissao indica novo registro ou nao (0 = novo, id_vendedor = antigo)
     botao_incluir_comis.grid(row=6, column = 2, sticky = W)
 
     botao_enviar = Button(frame_cad_vend,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_vend,{"classe": model.vendedor, "nome_pessoa": nome_vend.get(),

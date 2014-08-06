@@ -17,7 +17,7 @@ def cria_banco():
     query.execute('''CREATE TABLE pessoas (id integer PRIMARY KEY AUTOINCREMENT,nome text,email text, endereco text,
                                                             tel_cel text,tel_res text,tel_com text, tipo integer)''')
 
-    query.execute('''CREATE TABLE comissoes (id integer PRIMARY KEY AUTOINCREMENT,vendedor_id integer,forncedor_id integer,comissao integer)''')
+    query.execute('''CREATE TABLE comissoes (id integer PRIMARY KEY AUTOINCREMENT,vendedor_id integer,fornecedor_id integer,comissao integer)''')
 
     query.execute('''CREATE TABLE produtos (id integer PRIMARY KEY AUTOINCREMENT,codigo integer,
                                             forn_id integer,qnt integer,descr text, pcompra integer, pvenda integer)''')

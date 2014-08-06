@@ -67,6 +67,11 @@ class vendedor(pessoa):
         for comissao in self.comissoes:
                 controller.grava('comissoes',[pessoa_id,comissao[0], comissao[1]])
 
+    def alterar(self,ident):
+        pessoa_id = pessoa.alterar(self,ident)
+        for comissao in self.comissoes:
+                controller.altera('comissoes','comissao = '+str(comissao[1]),' vendedor_id = '+str(ident)+' AND fornecedor_id = '+str(comissao[0]))
+
 
 class produto():
     codigo = 0

@@ -67,13 +67,13 @@ def mostra_dados_vend(event, tabela, pai):
     valores =  item.values()[2]
 
     popup = Toplevel()
-    popup.title("Gerenciador - Dados Produtos")
+    popup.title("Gerenciador - Dados Vendedores")
 
     viewCadastros.tela_cad_vend(popup)
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
-    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer função
+    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer funcao
     filhos[3].insert(0, valores[5])     #tel res                        #carrega os valores da consulta do banco
     filhos[5].insert(0, valores[4])     #tel cel
     filhos[7].insert(0, valores[6])     #tel com
@@ -81,11 +81,10 @@ def mostra_dados_vend(event, tabela, pai):
     filhos[11].insert(0, valores[3])    #endereco
 
     comissoes = []
-    filhos[14] = Button(filho[0], text="Incluir", command= lambda: viewCadastros.inclui_comissao(comissoes))
-    filhos[14].grid(row=7, column = 2, sticky = W)
+    filhos[13].configure(command= lambda: viewCadastros.inclui_comissao(comissoes,valores[0]))
 
-    filhos[15].configure(text="Alterar")
-    filhos[15].configure(command=lambda: controller.alterar("lista_vend", popup, pai, {"classe":model.vendedor, "id":valores[0], "nome_pessoa":filhos[1].get(), "email":filhos[9].get(),"endereco":filhos[11].get(), "tel_cel":filhos[5].get(), "tel_res":filhos[3].get(),"tel_com":filhos[7].get(),"tipo":1,"comissoes":comissoes.get() }))
+    filhos[14].configure(text="Alterar")
+    filhos[14].configure(command=lambda: controller.alterar("lista_vend", popup, pai, {"classe":model.vendedor, "id":valores[0], "nome_pessoa":filhos[1].get(), "email":filhos[9].get(),"endereco":filhos[11].get(), "tel_cel":filhos[5].get(), "tel_res":filhos[3].get(),"tel_com":filhos[7].get(),"tipo":1,"comissoes":comissoes }))
 
     botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir(filho[0],popup, pai,{"classe":model.vendedor, "id":valores[0],"nome_pessoa": '', "email": '',"endereco": '',"tel_cel": '', "tel_res": '',"tel_com": '',"tipo": 1}))
     botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
