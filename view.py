@@ -92,7 +92,7 @@ def tela_principal(): #define elementos basicos que devem aparecer na tela princ
 
     menu_lista = Menu(menu_principal, tearoff=0)
     menu_lista.add_command(label="Fornecedores", command = lambda: controller.lista_forn(root))
-    menu_lista.add_command(label="Produtos")
+    menu_lista.add_command(label="Produtos", command = lambda: controller.lista_prod(root))
     menu_lista.add_command(label="Vendedores", command = lambda: controller.lista_vend(root))
     menu_lista.add_command(label="Clientes", command = lambda: controller.lista_clie(root))
     menu_principal.add_cascade(label="Listagem", menu = menu_lista)

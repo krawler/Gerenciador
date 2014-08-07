@@ -136,6 +136,11 @@ def lista_forn(root):
     dados = busca('id, nome, dur_camp','fornecedores',"where del='false'",'')
     viewListagem.tela_lista_forn(root,cabecalhos, dados)
 
+def lista_prod(root):
+    cabecalhos = ['ID', u'Código', 'ID fornecedor', 'Quantidade', u'Descrição' ,u'Preço Compra', u'Preço Venda']
+    dados = busca('id, codigo, forn_id, qnt, descr, pcompra, pvenda','produtos','','')
+    viewListagem.tela_lista_forn(root,cabecalhos, dados)
+
 def lista_clie(root):
     cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
@@ -149,15 +154,12 @@ def lista_vend(root):
 
 
 def verifica_deletados(): # TODO: ver se existem outras dependencias no banco.
-    print "verificando os puto tudo"
     for fornecedor in busca('id','fornecedores',"where del='true'",''):
         #print fornecedor[0]
         usos = busca('id','produtos','where forn_id="'+str(fornecedor[0])+'"','')
-        if usos is not None:
-            print 'exclui fornecedor_id=' + str(fornecedor[0])
+        if usos is None:
             exclui('fornecedores', ' id="'+str(fornecedor[0])+'"')
             for comissao in busca('id','comissoes','where fornecedor_id="'+str(fornecedor[0])+'"',''):
-                print comissao
                 exclui('comissoes',' id="'+str(comissao[0])+'"')
 
 def main():

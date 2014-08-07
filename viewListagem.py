@@ -90,6 +90,40 @@ def mostra_dados_vend(event, tabela, pai):
     botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
 
 
+def mostra_dados_prod(event, tabela,pai):   
+    id_item = tabela.identify('row',event.x,event.y)
+    item = tabela.item(id_item)
+    valores =  item.values()[2]
+
+    popup = Toplevel()
+    popup.title("Gerenciador - Dados Produto")
+
+    viewCadastros.tela_cad_prod(popup)
+
+    filho = popup.winfo_children()
+    filhos = filho[0].winfo_children()
+    filhos[1].insert(0, valores[1]) # codigo
+    filhos[3].insert(0, valores[2]) # Fornecedor
+    #try:
+        #dados = controller.busca("nome", "fornecedores","","")
+        #var_forn = StringVar(frame_cad_prod)
+        #var_forn.set(dados[0])
+        #forn_prod = apply(OptionMenu, (frame_cad_prod,var_forn) + tuple(dados))
+    #except:
+        #var_forn.set("")
+        #forn_prod = OptionMenu(frame_cad_prod,var_forn,"")
+    filhos[5].insert(0, valores[3]) # quantidade
+    filhos[7].insert(0, valores[4]) # descricao
+    filhos[9].insert(0, valores[5]) # pcompra
+    filhos[11].insert(0, valores[6]) # pvenda
+
+    filhos[12].configure(text="Alterar")
+    filhos[12].configure(command=lambda: controller.alterar("lista_forn", popup, pai, {"classe":model.fornecedor,"id":valores[0],"nome_forn":filhos[1].get(), "dur_camp":filhos[3].get()}))
+
+    botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir("lista_forn",popup, pai,{"classe":model.fornecedor,"id":valores[0],"nome_forn":'', "dur_camp":''}))
+    botao_excluir.grid(row=2,column=0, sticky=E, pady=10)
+
+
 def tela_lista_forn(root,cabecalhos, dados):
     view.limpa_tela(root)
 
@@ -184,3 +218,33 @@ def tela_lista_vend(root,cabecalhos, dados):
 
     tabela.bind("<Double-Button-1>", lambda event: mostra_dados_vend(event,tabela,root))
     
+
+def tela_lista_prod(root,cabecalhos, dados):
+    view.limpa_tela(root)
+
+    frame_lista_vend = LabelFrame(root, text="Listagem Produtos", padx=5, pady=5)
+    frame_lista_vend.grid(padx=10, pady=10)    
+
+    tabela = ttk.Treeview(columns=cabecalhos, show="headings")
+    scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
+    scroll_h = ttk.Scrollbar(orient="horizontal", command=tabela.xview)
+    tabela.configure(yscrollcommand=scroll_v.set, xscrollcommand=scroll_h.set)
+    tabela.grid(column=0, row=0, sticky='nsew', in_=frame_lista_vend)
+    scroll_v.grid(column=1, row=0, sticky='ns', in_=frame_lista_vend)
+    scroll_h.grid(column=0, row=1, sticky='ew', in_=frame_lista_vend)
+    frame_lista_vend.grid_columnconfigure(0, weight=1)
+    frame_lista_vend.grid_rowconfigure(0, weight=1)
+    
+    for col in cabecalhos:
+        tabela.heading(col, text=col.title(),command=lambda c=col: view.sortby(tabela, c, 0))
+            # adjust the column's width to the header string
+        tabela.column(col,width=tkFont.Font().measure(col.title()))
+    for item in dados:
+        tabela.insert('', 'end', values=item)
+        # adjust column's width if necessary to fit each value
+        for ix, val in enumerate(item):
+            col_w = tkFont.Font().measure(val)
+            if tabela.column(cabecalhos[ix],width=None) < col_w :
+                tabela.column(cabecalhos[ix], width=col_w)
+
+    tabela.bind("<Double-Button-1>", lambda event: mostra_dados_prod(event,tabela,root))
