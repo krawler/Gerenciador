@@ -7,12 +7,13 @@ import viewCadastros
 import viewListagem
 import os
 import sqlite3 as sql
+import atexit
 
 def cria_banco():
     conexao = sql.connect('info.db')
     query = conexao.cursor()
 
-    query.execute('''CREATE TABLE fornecedores (id integer PRIMARY KEY AUTOINCREMENT,nome text,dur_camp integer)''')
+    query.execute('''CREATE TABLE fornecedores (id integer PRIMARY KEY AUTOINCREMENT,nome text,dur_camp integer, del boolean default false)''')
 
     query.execute('''CREATE TABLE pessoas (id integer PRIMARY KEY AUTOINCREMENT,nome text,email text, endereco text,
                                                             tel_cel text,tel_res text,tel_com text, tipo integer)''')
@@ -131,23 +132,39 @@ def cad_prod(root):
     viewCadastros.tela_cad_prod(root)
 
 def lista_forn(root):
-    cabecalhos = ['ID', 'Nome', u'DuraÃ§Ã£o Campanha']
-    dados = busca('*','fornecedores','','')
+    cabecalhos = ['ID', 'Nome', u'Duração Campanha']
+    dados = busca('id, nome, dur_camp','fornecedores',"where del='false'",'')
     viewListagem.tela_lista_forn(root,cabecalhos, dados)
 
 def lista_clie(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'EndereÃ§o', 'Telefone Celular', u'Telefone residÃªncial', 'Telefone Comercial']
+    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
     viewListagem.tela_lista_clie(root,cabecalhos, dados)
 
 def lista_vend(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'EndereÃ§o', 'Telefone Celular', u'Telefone residÃªncial', 'Telefone Comercial']
+    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
     dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com', 'pessoas', 'WHERE tipo=1','')
     viewListagem.tela_lista_vend(root,cabecalhos, dados)
 
 
 
+def verifica_deletados(): # TODO: ver se existem outras dependencias no banco.
+    print "verificando os puto tudo"
+    for fornecedor in busca('id','fornecedores',"where del='true'",''):
+        #print fornecedor[0]
+        usos = busca('id','produtos','where forn_id="'+str(fornecedor[0])+'"','')
+        if usos is not None:
+            print 'exclui fornecedor_id=' + str(fornecedor[0])
+            exclui('fornecedores', ' id="'+str(fornecedor[0])+'"')
+            for comissao in busca('id','comissoes','where fornecedor_id="'+str(fornecedor[0])+'"',''):
+                print comissao
+                exclui('comissoes',' id="'+str(comissao[0])+'"')
+
 def main():
+    # registra a funcao verifica_deletados para ser executada ao fim do programa.
+    # https://docs.python.org/2/library/atexit.html
+    atexit.register(verifica_deletados)
+    
     verifica_banco()
     view.tela_principal()
 

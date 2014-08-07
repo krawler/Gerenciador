@@ -26,7 +26,7 @@ class fornecedor:
         
 
     def excluir(self,ident):
-        controller.exclui('fornecedores',' id='+str(ident))
+        controller.altera('fornecedores', "del='true'",' id='+str(ident))
     
 class pessoa:
     nome = ''
