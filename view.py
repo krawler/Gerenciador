@@ -84,7 +84,9 @@ def tela_principal(): #define elementos basicos que devem aparecer na tela princ
     menu_principal.add_cascade(label="Arquivo", menu = menu_arquivo)
 
     menu_cadastro = Menu(menu_principal, tearoff=0)
+    menu_cadastro.add_command(label="Venda" )
     menu_cadastro.add_command(label="Fornecedores", command = lambda: controller.cad_forn(root) )
+    menu_cadastro.add_command(label="Campanha")
     menu_cadastro.add_command(label="Produtos", command = lambda: controller.cad_prod(root))
     menu_cadastro.add_command(label="Vendedores", command = lambda: controller.cad_vend(root))
     menu_cadastro.add_command(label="Clientes", command = lambda: controller.cad_clie(root))
