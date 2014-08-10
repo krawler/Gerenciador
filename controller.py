@@ -23,6 +23,17 @@ def cria_banco():
     query.execute('''CREATE TABLE produtos (id integer PRIMARY KEY AUTOINCREMENT,codigo integer,
                                             forn_id integer,qnt integer,descr text, pcompra integer, pvenda integer)''')
 
+    query.execute('''CREATE TABLE campanhas (id integer PRIMARY KEY AUTOINCREMENT, forn_id integer, data_inic text, data_fim text)''')
+
+    query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer)''')
+
+    query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer)''')
+
+    query.execute('''CREATE TABLE vendas (id integer PRIMARY KEY AUTOINCREMENT, clie_id integer, vendor_id integer,
+                                            data text, valor_total real, status integer)''')
+
+    query.execute('''CREATE TABLE produtos_venda (id integer PRIMARY KEY AUTOINCREMENT, venda_id integer, cod_prod integer, quant integer)''')
+
     conexao.commit()
 
     conexao.close()
