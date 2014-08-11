@@ -25,9 +25,7 @@ def cria_banco():
 
     query.execute('''CREATE TABLE campanhas (id integer PRIMARY KEY AUTOINCREMENT, forn_id integer, data_inic text, data_fim text)''')
 
-    query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer)''')
-
-    query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer)''')
+    query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer, desconto real)''')
 
     query.execute('''CREATE TABLE vendas (id integer PRIMARY KEY AUTOINCREMENT, clie_id integer, vendor_id integer,
                                             data text, valor_total real, status integer)''')
@@ -132,6 +130,9 @@ def cadastrar(pai,dados):
 
 def cad_forn(root):
     viewCadastros.tela_cad_forn(root)
+
+def cad_camp(root):
+    viewCadastros.tela_cad_camp(root)
 
 def cad_clie(root):
     viewCadastros.tela_cad_clie(root)
