@@ -12,6 +12,14 @@ import ttk as ttk
 
 #==============================================================================================================================================#
 
+def inclui_prod_camp(pai,produto,desconto,dados):
+    prod = produto.get()
+    desc = desconto.get()
+    dados.append((prod,desc))
+    produto.delete(0,len(prod))
+    desconto.delete(0,len(desc))
+    sub_lista_prod_camp(pai,dados)
+
 def inclui_comissao(comissoes,novo):
     tela = Toplevel()
     tela.title("Gerenciador - Comiss√µes")
@@ -73,9 +81,37 @@ def tela_cad_forn(root):
 
 #==============================================================================================================================================#
 
+def sub_lista_prod_camp(pai,dados):
+    cabecalhos = [u'CÛdigo', 'Desconto'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
+
+    tabela = ttk.Treeview(columns=cabecalhos, show="headings")
+    scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
+    scroll_h = ttk.Scrollbar(orient="horizontal", command=tabela.xview)
+    tabela.configure(yscrollcommand=scroll_v.set, xscrollcommand=scroll_h.set)
+    tabela.grid(column=0, row=4, sticky='nsew', in_=pai)
+    scroll_v.grid(column=1, row=4, sticky='nsw', in_=pai)
+    scroll_h.grid(column=0, row=5, sticky='ew', in_=pai)
+    pai.grid_columnconfigure(4, weight=1)
+    pai.grid_rowconfigure(4, weight=1)
+
+    for col in cabecalhos:
+        tabela.heading(col, text=col.title(),command=lambda c=col: view.sortby(tabela, c, 0))
+            # adjust the column's width to the header string
+        tabela.column(col,width=tkFont.Font().measure(col.title()))
+    for item in dados:
+        tabela.insert('', 'end', values=item)
+        # adjust column's width if necessary to fit each value
+        for ix, val in enumerate(item):
+            col_w = tkFont.Font().measure(val)
+            if tabela.column(cabecalhos[ix],width=None) < col_w :
+                tabela.column(cabecalhos[ix], width=col_w)
+
+
 def tela_cad_camp(root):
     view.limpa_tela(root)
 
+    dados = []
+    
     frame_cad_camp = LabelFrame(root, text="Cadastro Campanha", padx=5, pady=5)
     frame_cad_camp.grid(padx=10, pady=10)
 
@@ -83,10 +119,10 @@ def tela_cad_camp(root):
     campo1.grid(row = 0, column = 0)
 
     try:
-            dados = controller.busca("nome", "fornecedores","","")
+            lista_forn = controller.busca("nome", "fornecedores","","")
             var_forn = StringVar(frame_cad_camp)
-            var_forn.set(dados[0])
-            forn = apply(OptionMenu, (frame_cad_camp,var_forn) + tuple(dados))
+            var_forn.set(lista_forn[0])
+            forn = apply(OptionMenu, (frame_cad_camp,var_forn) + tuple(lista_forn))
     except:
             var_forn.set("")
             forn = OptionMenu(frame_cad_camp,var_forn,"")
@@ -117,34 +153,10 @@ def tela_cad_camp(root):
     desco_prod = Entry(frame_cad_camp, width=10)
     desco_prod.grid(row=3, column = 3)
 
-    botao_incluir_prod = Button(frame_cad_camp, text="Incluir") #TODO incluir produto na lista abaixo
+    botao_incluir_prod = Button(frame_cad_camp, text="Incluir", command=lambda: inclui_prod_camp(frame_cad_camp,cod_prod,desco_prod,dados))
     botao_incluir_prod.grid(row=3, column =4, sticky = W)
 
-    cabecalhos = [u'CÛdigo', 'Desconto'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
-    dados = [] #TODO inserir aqui os produtos acima
-
-    tabela = ttk.Treeview(columns=cabecalhos, show="headings")
-    scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
-    scroll_h = ttk.Scrollbar(orient="horizontal", command=tabela.xview)
-    tabela.configure(yscrollcommand=scroll_v.set, xscrollcommand=scroll_h.set)
-    tabela.grid(column=0, row=4, sticky='nsew', in_=frame_cad_camp)
-    scroll_v.grid(column=1, row=4, sticky='nsw', in_=frame_cad_camp)
-    scroll_h.grid(column=0, row=5, sticky='ew', in_=frame_cad_camp)
-    frame_cad_camp.grid_columnconfigure(4, weight=1)
-    frame_cad_camp.grid_rowconfigure(4, weight=1)
-
-    for col in cabecalhos:
-        tabela.heading(col, text=col.title(),command=lambda c=col: view.sortby(tabela, c, 0))
-            # adjust the column's width to the header string
-        tabela.column(col,width=tkFont.Font().measure(col.title()))
-    for item in dados:
-        tabela.insert('', 'end', values=item)
-        # adjust column's width if necessary to fit each value
-        for ix, val in enumerate(item):
-            col_w = tkFont.Font().measure(val)
-            if tabela.column(cabecalhos[ix],width=None) < col_w :
-                tabela.column(cabecalhos[ix], width=col_w)
-
+    sub_lista_prod_camp(frame_cad_camp,dados)
 
     botao_enviar = Button(frame_cad_camp,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_camp,{"classe":model.campanha,"forn":forn.get(), "data_inic":inic_camp.get()})) #passo os dados do formulario em um dicionario
     botao_enviar.grid(row=6,column=4, columnspan=2, sticky=W, pady=10)
