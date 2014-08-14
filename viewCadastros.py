@@ -88,9 +88,9 @@ def sub_lista_prod_camp(pai,dados):
     scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
     scroll_h = ttk.Scrollbar(orient="horizontal", command=tabela.xview)
     tabela.configure(yscrollcommand=scroll_v.set, xscrollcommand=scroll_h.set)
-    tabela.grid(column=0, row=4, sticky='nsew', in_=pai)
-    scroll_v.grid(column=1, row=4, sticky='nsw', in_=pai)
-    scroll_h.grid(column=0, row=5, sticky='ew', in_=pai)
+    tabela.grid(column=0, row=3, sticky='nsew', in_=pai)
+    scroll_v.grid(column=1, row=3, sticky='nsw', in_=pai)
+    scroll_h.grid(column=0, row=4, sticky='ew', in_=pai)
     pai.grid_columnconfigure(4, weight=1)
     pai.grid_rowconfigure(4, weight=1)
 
@@ -119,7 +119,7 @@ def tela_cad_camp(root):
     campo1.grid(row = 0, column = 0)
 
     try:
-            lista_forn = controller.busca("nome", "fornecedores","","")
+            lista_forn = controller.busca("nome", "fornecedores","","")      
             var_forn = StringVar(frame_cad_camp)
             var_forn.set(lista_forn[0])
             forn = apply(OptionMenu, (frame_cad_camp,var_forn) + tuple(lista_forn))
@@ -135,34 +135,28 @@ def tela_cad_camp(root):
     inic_camp = Entry(frame_cad_camp, width=20)
     inic_camp.grid(row=1, column = 1)
 
-    campo3 = Label(frame_cad_camp, text="Data Fim:")                #TODO buscar dados do banco para calcular
+    campo3 = Label(frame_cad_camp, text="Código Produto:")
     campo3.grid(row = 2, column = 0)
 
-    fim_camp = Entry(frame_cad_camp, width=20)
-    fim_camp.grid(row=2, column = 1)
-
-    campo4 = Label(frame_cad_camp, text="Código Produto:")
-    campo4.grid(row = 3, column = 0)
-
     cod_prod = Entry(frame_cad_camp, width=20)
-    cod_prod.grid(row=3, column = 1)
+    cod_prod.grid(row=2, column = 1)
 
     campo5 = Label(frame_cad_camp, text="Desconto:")
-    campo5.grid(row = 3, column = 2)
+    campo5.grid(row = 2, column = 2)
 
     desco_prod = Entry(frame_cad_camp, width=10)
-    desco_prod.grid(row=3, column = 3)
+    desco_prod.grid(row=2, column = 3)
 
     botao_incluir_prod = Button(frame_cad_camp, text="Incluir", command=lambda: inclui_prod_camp(frame_cad_camp,cod_prod,desco_prod,dados))
-    botao_incluir_prod.grid(row=3, column =4, sticky = W)
+    botao_incluir_prod.grid(row=2, column =4, sticky = W)
 
     sub_lista_prod_camp(frame_cad_camp,dados)
 
-    botao_enviar = Button(frame_cad_camp,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_camp,{"classe":model.campanha,"forn":forn.get(), "data_inic":inic_camp.get()})) #passo os dados do formulario em um dicionario
-    botao_enviar.grid(row=6,column=4, columnspan=2, sticky=W, pady=10)
+    botao_enviar = Button(frame_cad_camp,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_camp,{"classe":model.campanha,"fornecedor":var_forn.get(), "data_inic":inic_camp.get(),"produtos":dados})) #passo os dados do formulario em um dicionario
+    botao_enviar.grid(row=5,column=4, columnspan=2, sticky=W, pady=10)
     
     botao_limpar = Button(frame_cad_camp,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_camp))
-    botao_limpar.grid(row=6,column=3, sticky=E, pady=10)
+    botao_limpar.grid(row=5,column=3, sticky=E, pady=10)
 
 #=============================================================================================================================================#
 

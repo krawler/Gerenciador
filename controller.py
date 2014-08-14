@@ -46,7 +46,8 @@ def grava(tabela,dados):
         query = conexao.cursor()
         values = str(dados)
         values = values[1:len(values)-1]
-        query.execute("INSERT INTO "+tabela+" VALUES (NULL, "+values+")" )
+        command = "INSERT INTO "+tabela+" VALUES (NULL, "+values+")"
+        query.execute(command)
         conexao.commit()
         row_id = query.lastrowid
         conexao.close()
@@ -59,7 +60,8 @@ def altera(tabela,dados, condicao):
     try:
         conexao = sql.connect('info.db')
         query = conexao.cursor()
-        query.execute("UPDATE "+tabela+" SET "+dados+" WHERE "+condicao )
+        command = "UPDATE "+tabela+" SET "+dados+" WHERE "+condicao 
+        query.execute(command)
         conexao.commit()
         row_id = query.lastrowid
         conexao.close()
@@ -73,7 +75,8 @@ def busca(selecao, tabela, condicoes, opcionais):
         conexao = sql.connect('info.db')
         conexao.text_factory = str
         query = conexao.cursor()
-        query.execute("SELECT "+selecao+" FROM "+tabela+" "+condicoes+" "+opcionais)
+        command = "SELECT "+selecao+" FROM "+tabela+" "+condicoes+" "+opcionais # debug
+        query.execute(command)
         dados =  query.fetchall()
         conexao.commit()
         conexao.close()
@@ -86,7 +89,8 @@ def exclui(tabela, condicao):
     try:
         conexao = sql.connect('info.db')
         query = conexao.cursor()
-        query.execute("DELETE FROM "+tabela+" WHERE "+condicao)
+        command = "DELETE FROM "+tabela+" WHERE "+condicao
+        query.execute(command)
         conexao.commit()
         row_id = query.lastrowid
         conexao.close()

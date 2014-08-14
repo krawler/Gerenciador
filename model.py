@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import controller
+import datetime
 
 #TODO verificar duplicata de dados antes de salvar (todas as classes)
 #TODO verificar dados antes de salvar(vazio, preenchimento incorreto, etc)
@@ -19,7 +20,7 @@ class fornecedor:
 
 
     def salvar(self):
-        controller.grava('fornecedores',[self.nome, self.campanha])
+        controller.grava('fornecedores',[self.nome, self.campanha,"FALSE"])
 
     def alterar(self,ident):
         controller.altera('fornecedores','nome = "'+self.nome+'", dur_camp='+str(self.campanha),' id='+str(ident))
@@ -27,6 +28,35 @@ class fornecedor:
 
     def excluir(self,ident):
         controller.altera('fornecedores', "del='true'",' id='+str(ident))
+
+class campanha:
+    forn_id = 0
+    data_inic = ''
+    data_fim = ''
+    itens = []
+
+    def __init__(self,dados):
+        temp = dados["fornecedor"]
+        temp = apaga(temp,"(),")
+        dado = controller.busca("id", "fornecedores", "WHERE nome = "+temp, "")         #busca id fornecedor
+        dado = str(dado)
+        dado = apaga(dado,"[](),")                                                      #consulta retorna com caracteres especiais
+        self.forn_id = dado[0]
+        
+        dur_camp = controller.busca('dur_camp','fornecedores','WHERE id = '+self.forn_id,'')        #calculo do fim da data de fim da campanha
+        dur_camp = apaga(str(dur_camp),"[](),")
+        auxDate = datetime.datetime.strptime(dados["data_inic"], "%d/%m/%Y")
+
+        self.data_fim = auxDate + datetime.timedelta(days=int(dur_camp))
+        self.data_inic = auxDate
+        self.data_fim = self.data_fim.strftime('%d/%m/%Y')
+        self.data_inic = self.data_inic.strftime('%d/%m/%Y')
+        self.itens = dados["produtos"]
+
+    def salvar(self):
+        camp_id = controller.grava('campanhas',[self.forn_id,self.data_inic,self.data_fim])
+        for item in self.itens:
+            controller.grava('itens_campanha',[camp_id,item[0],item[1]]) # item[0] = cod_prod, item[1] = desconto
     
 class pessoa:
     nome = ''
