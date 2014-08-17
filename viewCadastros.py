@@ -12,6 +12,11 @@ import ttk as ttk
 
 #==============================================================================================================================================#
 
+def excluir_prod_camp(event,tabela,dados,pai):
+    index = tabela.index(tabela.identify_row(event.y))
+    dados.pop(index)
+    sub_lista_prod_camp(pai,dados)
+
 def inclui_prod_camp(pai,produto,desconto,dados):
     prod = produto.get()
     desc = desconto.get()
@@ -105,6 +110,8 @@ def sub_lista_prod_camp(pai,dados):
             col_w = tkFont.Font().measure(val)
             if tabela.column(cabecalhos[ix],width=None) < col_w :
                 tabela.column(cabecalhos[ix], width=col_w)
+
+    tabela.bind("<Double-Button-1>", lambda event: excluir_prod_camp(event,tabela,dados,pai))
 
 
 def tela_cad_camp(root):
