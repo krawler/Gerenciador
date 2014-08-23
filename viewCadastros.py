@@ -17,9 +17,22 @@ def excluir_prod_camp(event,tabela,dados,pai):
     dados.pop(index)
     sub_lista_prod_camp(pai,dados)
 
+def excluir_prod_vend(event,tabela,dados,pai):
+    index = tabela.index(tabela.identify_row(event.y))
+    dados.pop(index)
+    sub_lista_prod_camp(pai,dados)
+
 def inclui_prod_camp(pai,produto,desconto,dados):
     prod = produto.get()
     desc = desconto.get()
+    dados.append((prod,desc))
+    produto.delete(0,len(prod))
+    desconto.delete(0,len(desc))
+    sub_lista_prod_camp(pai,dados)
+
+def inclui_prod_vend(pai,produto,qnt,dados):
+    prod = produto.get()
+    desc = qnt.get()
     dados.append((prod,desc))
     produto.delete(0,len(prod))
     desconto.delete(0,len(desc))
@@ -54,6 +67,78 @@ def inclui_comissao(comissoes,novo):
     botao_ok = Button(tela,text="Finalizar", command=lambda: view.get_entradas(tela, entradas,comissoes))
     botao_ok.grid(row = x , column = 3)
 
+#==============================================================================================================================================#
+
+def sub_lista_prod_vend(pai,dados):
+    cabecalhos = [u'Código', u'Valor Unitário','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
+
+    tabela = ttk.Treeview(columns=cabecalhos, show="headings")
+    scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
+    scroll_h = ttk.Scrollbar(orient="horizontal", command=tabela.xview)
+    tabela.configure(yscrollcommand=scroll_v.set, xscrollcommand=scroll_h.set)
+    tabela.grid(column=0, row=3, columnspan=4, sticky='nsew', in_=pai)
+    scroll_v.grid(column=4, row=3, sticky='nsw', in_=pai)
+#    scroll_h.grid(column=0, row=4, sticky='ew', in_=pai)
+    pai.grid_columnconfigure(4, weight=1)
+    pai.grid_rowconfigure(4, weight=1)
+
+    for col in cabecalhos:
+        tabela.heading(col, text=col.title(),command=lambda c=col: view.sortby(tabela, c, 0))
+            # adjust the column's width to the header string
+        tabela.column(col,width=tkFont.Font().measure(col.title()))
+    for item in dados:
+        tabela.insert('', 'end', values=item)
+        # adjust column's width if necessary to fit each value
+        for ix, val in enumerate(item):
+            col_w = tkFont.Font().measure(val)
+            if tabela.column(cabecalhos[ix],width=None) < col_w :
+                tabela.column(cabecalhos[ix], width=col_w)
+
+    tabela.bind("<Double-Button-1>", lambda event: excluir_prod_vend(event,tabela,dados,pai))
+
+def tela_cad_vendas(root):
+    view.limpa_tela(root)
+
+    dados=[]
+
+    frame_cad_vendas = LabelFrame(root, text="Cadastro Vendas", padx=5, pady=5)
+    frame_cad_vendas.grid(padx=10, pady=10)
+
+    campo1 = Label(frame_cad_vendas, text="CPF vendedor:")
+    campo1.grid(row = 0, column = 0, sticky = W)
+
+
+    cpf_vendor = Entry(frame_cad_vendas, width=20)
+    cpf_vendor.grid(row=0, column = 1, sticky = W)
+
+    campo2 = Label(frame_cad_vendas, text="CPF Cliente:")
+    campo2.grid(row = 1, column = 0, sticky = W)
+
+    cpf_clie = Entry(frame_cad_vendas, width=20)
+    cpf_clie.grid(row=1, column = 1, sticky = W)
+
+    campo3 = Label(frame_cad_vendas, text="Código Produto:")
+    campo3.grid(row = 2, column = 0, sticky = W)
+
+    cod_prod = Entry(frame_cad_vendas, width=20)
+    cod_prod.grid(row=2, column = 1, sticky = W)
+
+    campo5 = Label(frame_cad_vendas, text="Quantidade:")
+    campo5.grid(row = 2, column = 2, sticky = W)
+
+    qnt_prod = Entry(frame_cad_vendas, width=10)
+    qnt_prod.grid(row=2, column = 3, sticky = W)
+
+    botao_incluir_prod = Button(frame_cad_vendas, text="Incluir", command=lambda: inclui_prod_vend(frame_cad_vendas,cod_prod,qnt_prod,dados))
+    botao_incluir_prod.grid(row=2, column =4, sticky = W)
+
+    sub_lista_prod_vend(frame_cad_vendas,dados)
+    
+    botao_enviar = Button(frame_cad_vendas,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_forn,{"classe":model.fornecedor,"nome_forn":nome_forn.get(), "dur_camp":dur_camp_forn.get()})) #passo os dados do formulario em um dicionario
+    botao_enviar.grid(row=4,column=6, columnspan=2, sticky=W, pady=10)
+    
+    botao_limpar = Button(frame_cad_vendas,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_forn))
+    botao_limpar.grid(row=4,column=5, sticky=E, pady=10)
 
 #==============================================================================================================================================#
 

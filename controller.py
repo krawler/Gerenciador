@@ -132,6 +132,9 @@ def cadastrar(pai,dados):
     del novo
     view.limpa_entradas(pai)
 
+def cad_vendas(root):
+    viewCadastros.tela_cad_vendas(root)
+
 def cad_forn(root):
     viewCadastros.tela_cad_forn(root)
 
