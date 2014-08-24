@@ -15,7 +15,7 @@ def cria_banco():
 
     query.execute('''CREATE TABLE fornecedores (id integer PRIMARY KEY AUTOINCREMENT,nome text,dur_camp integer, del boolean default false)''')
 
-    query.execute('''CREATE TABLE pessoas (id integer PRIMARY KEY AUTOINCREMENT,nome text,email text, endereco text,
+    query.execute('''CREATE TABLE pessoas (id integer PRIMARY KEY AUTOINCREMENT,nome text,cpf integer, email text, endereco text,
                                                             tel_cel text,tel_res text,tel_com text, tipo integer)''')
 
     query.execute('''CREATE TABLE comissoes (id integer PRIMARY KEY AUTOINCREMENT,vendedor_id integer,fornecedor_id integer,comissao integer)''')
@@ -181,6 +181,11 @@ def verifica_deletados(): # TODO: ver se existem outras dependencias no banco.
             for comissao in busca('id','comissoes','where fornecedor_id="'+str(fornecedor[0])+'"',''):
                 exclui('comissoes',' id="'+str(comissao[0])+'"')
 
+def busca_cpf(event,pai,cpf,index):
+    nome = busca("nome","pessoas","WHERE cpf = "+cpf,"")
+    nome = model.apaga(str(nome),"[]()'',")
+    viewCadastros.mostra_nome(pai,nome,index)
+    
 def main():
     # registra a funcao verifica_deletados para ser executada ao fim do programa.
     # https://docs.python.org/2/library/atexit.html

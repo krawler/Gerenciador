@@ -60,6 +60,7 @@ class campanha:
     
 class pessoa:
     nome = ''
+    cpf = 0
     tel_cel = 0
     tel_res = 0
     tel_com = 0
@@ -68,6 +69,7 @@ class pessoa:
     tipo = 0
     def __init__(self,dados):
         self.nome       = dados["nome_pessoa"]
+        self.cpf       = dados["cpf"]
         self.email      = dados["email"]
         self.endereco   = dados["endereco"]
         self.tel_cel    = dados["tel_cel"]
@@ -76,7 +78,7 @@ class pessoa:
         self.tipo       = dados["tipo"]
 
     def salvar(self):
-        return controller.grava('pessoas',[self.nome, self.email, self.endereco, self.tel_cel, self.tel_res, self.tel_com, self.tipo])
+        return controller.grava('pessoas',[self.nome, self.cpf, self.email, self.endereco, self.tel_cel, self.tel_res, self.tel_com, self.tipo])
 
     def alterar(self,ident):
         controller.altera('pessoas','nome = "'+self.nome+'", email="'+str(self.email)+'", endereco="'+str(self.endereco)+'", tel_cel="'+str(self.tel_cel)+

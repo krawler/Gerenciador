@@ -20,7 +20,7 @@ def excluir_prod_camp(event,tabela,dados,pai):
 def excluir_prod_vend(event,tabela,dados,pai):
     index = tabela.index(tabela.identify_row(event.y))
     dados.pop(index)
-    sub_lista_prod_camp(pai,dados)
+    sub_lista_prod_vend(pai,dados)
 
 def inclui_prod_camp(pai,produto,desconto,dados):
     prod = produto.get()
@@ -35,8 +35,8 @@ def inclui_prod_vend(pai,produto,qnt,dados):
     desc = qnt.get()
     dados.append((prod,desc))
     produto.delete(0,len(prod))
-    desconto.delete(0,len(desc))
-    sub_lista_prod_camp(pai,dados)
+    qnt.delete(0,len(desc))
+    sub_lista_prod_vend(pai,dados)
 
 def inclui_comissao(comissoes,novo):
     tela = Toplevel()
@@ -68,6 +68,10 @@ def inclui_comissao(comissoes,novo):
     botao_ok.grid(row = x , column = 3)
 
 #==============================================================================================================================================#
+
+def mostra_nome(pai,nome,index):
+    campo = Label(pai, text=nome)
+    campo.grid(row = index, column = 2, sticky = W)
 
 def sub_lista_prod_vend(pai,dados):
     cabecalhos = [u'CÛdigo', u'Valor Unit·rio','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
@@ -107,8 +111,8 @@ def tela_cad_vendas(root):
     campo1 = Label(frame_cad_vendas, text="CPF vendedor:")
     campo1.grid(row = 0, column = 0, sticky = W)
 
-
     cpf_vendor = Entry(frame_cad_vendas, width=20)
+    cpf_vendor.bind("<FocusOut>",  lambda event: controller.busca_cpf(event,frame_cad_vendas,cpf_vendor.get(),0))
     cpf_vendor.grid(row=0, column = 1, sticky = W)
 
     campo2 = Label(frame_cad_vendas, text="CPF Cliente:")
@@ -265,44 +269,50 @@ def tela_cad_clie(root):
     nome_clie = Entry(frame_cad_clie, width=50)
     nome_clie.grid(row=0, column = 2, columnspan=3)
 
+    campo7 = Label(frame_cad_clie, text="CPF:")
+    campo7.grid(row = 1, column = 1,padx = 10)
+
+    cpf_clie = Entry(frame_cad_clie, width=50)
+    cpf_clie.grid(row=1, column = 2, columnspan=3)
+
     campo2 = Label(frame_cad_clie, text="Telefone Res:")
-    campo2.grid(row = 1, column = 0,padx = 10, columnspan=2)
+    campo2.grid(row = 2, column = 0,padx = 10, columnspan=2)
 
     tel_res = Entry(frame_cad_clie, width=50)
-    tel_res.grid(row=1, column = 2, columnspan=3)
+    tel_res.grid(row=2, column = 2, columnspan=3)
 
     campo3 = Label(frame_cad_clie, text="Telefone Cel:")
-    campo3.grid(row = 2, column = 0,padx = 10, columnspan=2)
+    campo3.grid(row = 3, column = 0,padx = 10, columnspan=2)
 
     tel_cel = Entry(frame_cad_clie, width=50)
-    tel_cel.grid(row=2, column = 2, columnspan=3)
+    tel_cel.grid(row=3, column = 2, columnspan=3)
 
     campo4 = Label(frame_cad_clie, text="Telefone Com:")
-    campo4.grid(row = 3, column = 0,padx = 10, columnspan=2)
+    campo4.grid(row = 4, column = 0,padx = 10, columnspan=2)
 
     tel_com = Entry(frame_cad_clie, width=50)
-    tel_com.grid(row=3, column = 2, columnspan=3)
+    tel_com.grid(row=4, column = 2, columnspan=3)
 
     campo5 = Label(frame_cad_clie, text="Email:")
-    campo5.grid(row = 4, column = 0,padx = 10, columnspan=2)
+    campo5.grid(row = 5, column = 0,padx = 10, columnspan=2)
 
     email = Entry(frame_cad_clie, width=50)
-    email.grid(row=4, column = 2, columnspan=3)
+    email.grid(row=5, column = 2, columnspan=3)
 
     campo6 = Label(frame_cad_clie, text="Endere√ßo:")
-    campo6.grid(row = 5, column = 0,padx = 10, columnspan=2)
+    campo6.grid(row = 6, column = 0,padx = 10, columnspan=2)
 
     endereco = Entry(frame_cad_clie, width=50)
-    endereco.grid(row=5, column = 2, columnspan=3)
+    endereco.grid(row=6, column = 2, columnspan=3)
 
     botao_enviar = Button(frame_cad_clie,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_clie,{"classe": model.pessoa, "nome_pessoa": nome_clie.get(),
-                                                                "email": email.get(),"endereco": endereco.get(),"tel_cel": tel_cel.get(),
+                                                                "cpf": cpf_clie.get(),"email": email.get(),"endereco": endereco.get(),"tel_cel": tel_cel.get(),
                                                                  "tel_res": tel_res.get(),"tel_com": tel_com.get(),"tipo": 0}))
     
-    botao_enviar.grid(row=7,column=4, columnspan=2, sticky=W, pady=10)
+    botao_enviar.grid(row=8,column=4, columnspan=2, sticky=W, pady=10)
     
     botao_limpar = Button(frame_cad_clie,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_clie))
-    botao_limpar.grid(row=7,column=3, sticky=E, pady=10)
+    botao_limpar.grid(row=8,column=3, sticky=E, pady=10)
 
 #==============================================================================================================================================#
 
@@ -319,51 +329,57 @@ def tela_cad_vend(root):
     nome_vend= Entry(frame_cad_vend, width=50)
     nome_vend.grid(row=0, column = 2, columnspan=3)
 
+    campo8 = Label(frame_cad_vend, text="CPF:")
+    campo8.grid(row = 1, column = 1,padx = 10)
+
+    cpf_vend = Entry(frame_cad_vend, width=50)
+    cpf_vend.grid(row=1, column = 2, columnspan=3)
+
     campo2 = Label(frame_cad_vend, text="Telefone Res:")
-    campo2.grid(row = 1, column = 0,padx = 10, columnspan=2)
+    campo2.grid(row = 2, column = 0,padx = 10, columnspan=2)
 
     tel_res = Entry(frame_cad_vend, width=50)
-    tel_res.grid(row=1, column = 2, columnspan=3)
+    tel_res.grid(row=2, column = 2, columnspan=3)
 
     campo3 = Label(frame_cad_vend, text="Telefone Cel:")
-    campo3.grid(row = 2, column = 0,padx = 10, columnspan=2)
+    campo3.grid(row = 3, column = 0,padx = 10, columnspan=2)
 
     tel_cel = Entry(frame_cad_vend, width=50)
-    tel_cel.grid(row=2, column = 2, columnspan=3)
+    tel_cel.grid(row=3, column = 2, columnspan=3)
 
     campo4 = Label(frame_cad_vend, text="Telefone Com:")
-    campo4.grid(row = 3, column = 0,padx = 10, columnspan=2)
+    campo4.grid(row = 4, column = 0,padx = 10, columnspan=2)
 
     tel_com = Entry(frame_cad_vend, width=50)
-    tel_com.grid(row=3, column = 2, columnspan=3)
+    tel_com.grid(row=4, column = 2, columnspan=3)
 
     campo5 = Label(frame_cad_vend, text="Email:")
-    campo5.grid(row = 4, column = 0,padx = 10, columnspan=2)
+    campo5.grid(row = 5, column = 0,padx = 10, columnspan=2)
 
     email = Entry(frame_cad_vend, width=50)
-    email.grid(row=4, column = 2, columnspan=3)
+    email.grid(row=5, column = 2, columnspan=3)
 
     campo6 = Label(frame_cad_vend, text="Endere√ßo:")
-    campo6.grid(row = 5, column = 0,padx = 10, columnspan=2)
+    campo6.grid(row = 6, column = 0,padx = 10, columnspan=2)
 
     endereco = Entry(frame_cad_vend, width=50)
-    endereco.grid(row=5, column = 2, columnspan=3)
+    endereco.grid(row=6, column = 2, columnspan=3)
 
     campo7 = Label(frame_cad_vend, text="Comiss√µes:")
-    campo7.grid(row = 6, column = 0,padx = 10, columnspan=2)
+    campo7.grid(row = 7, column = 0,padx = 10, columnspan=2)
 
     comissoes = []
     botao_incluir_comis = Button(frame_cad_vend, text="Incluir", command= lambda: inclui_comissao(comissoes,0)) #segundo par. de inclui_comissao indica novo registro ou nao (0 = novo, id_vendedor = antigo)
-    botao_incluir_comis.grid(row=6, column = 2, sticky = W)
+    botao_incluir_comis.grid(row=7, column = 2, sticky = W)
 
     botao_enviar = Button(frame_cad_vend,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_vend,{"classe": model.vendedor, "nome_pessoa": nome_vend.get(),
-                                                                "email": email.get(),"endereco": endereco.get(),"tel_cel": tel_cel.get(),
+                                                                "cpf": cpf_vend.get(),"email": email.get(),"endereco": endereco.get(),"tel_cel": tel_cel.get(),
                                                                  "tel_res": tel_res.get(),"tel_com": tel_com.get(),"tipo": 1,"comissoes":comissoes}))
     
-    botao_enviar.grid(row=7,column=4, columnspan=2, sticky=W, pady=10)
+    botao_enviar.grid(row=8,column=4, columnspan=2, sticky=W, pady=10)
     
     botao_limpar = Button(frame_cad_vend,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_vend))
-    botao_limpar.grid(row=7,column=3, sticky=E, pady=10)
+    botao_limpar.grid(row=8,column=3, sticky=E, pady=10)
 
 #==============================================================================================================================================#
 
