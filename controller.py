@@ -185,6 +185,15 @@ def busca_cpf(event,pai,cpf,index):
     nome = busca("nome","pessoas","WHERE cpf = "+cpf,"")
     nome = model.apaga(str(nome),"[]()'',")
     viewCadastros.mostra_nome(pai,nome,index)
+
+def busca_preco(prod):
+    retorno1 = busca("descr,pvenda","produtos","WHERE codigo = "+prod,"")
+    retorno2 = busca("desconto","itens_campanha","WHERE cod_prod="+prod,"")
+    if retorno2 == []:
+        return retorno1[0]
+    else:
+        valor = retorno1[0][1] - (retorno1[0][1]*(retorno2[0][0]/100))
+        return (retorno1[0][0],valor)
     
 def main():
     # registra a funcao verifica_deletados para ser executada ao fim do programa.

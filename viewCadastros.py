@@ -31,11 +31,12 @@ def inclui_prod_camp(pai,produto,desconto,dados):
     sub_lista_prod_camp(pai,dados)
 
 def inclui_prod_vend(pai,produto,qnt,dados):
-    prod = produto.get()
-    desc = qnt.get()
-    dados.append((prod,desc))
-    produto.delete(0,len(prod))
-    qnt.delete(0,len(desc))
+    cod_prod = produto.get()
+    quantos = qnt.get()
+    prod = controller.busca_preco(cod_prod)
+    dados.append((prod[0],prod[1],quantos,prod[1]*float(quantos)))
+    produto.delete(0,len(cod_prod))
+    qnt.delete(0,len(quantos))
     sub_lista_prod_vend(pai,dados)
 
 def inclui_comissao(comissoes,novo):
@@ -74,7 +75,7 @@ def mostra_nome(pai,nome,index):
     campo.grid(row = index, column = 2, sticky = W)
 
 def sub_lista_prod_vend(pai,dados):
-    cabecalhos = [u'Código', u'Valor Unitário','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
+    cabecalhos = [u'Descrição', u'Valor Unitário','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
 
     tabela = ttk.Treeview(columns=cabecalhos, show="headings")
     scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
@@ -119,6 +120,7 @@ def tela_cad_vendas(root):
     campo2.grid(row = 1, column = 0, sticky = W)
 
     cpf_clie = Entry(frame_cad_vendas, width=20)
+    cpf_clie.bind("<FocusOut>",  lambda event: controller.busca_cpf(event,frame_cad_vendas,cpf_clie.get(),1))
     cpf_clie.grid(row=1, column = 1, sticky = W)
 
     campo3 = Label(frame_cad_vendas, text="Código Produto:")
