@@ -34,7 +34,7 @@ def inclui_prod_vend(pai,produto,qnt,dados):
     cod_prod = produto.get()
     quantos = qnt.get()
     prod = controller.busca_preco(cod_prod)
-    dados.append((prod[0],prod[1],quantos,prod[1]*float(quantos)))
+    dados.append((cod_prod,prod[0],prod[1],quantos,prod[1]*float(quantos)))
     produto.delete(0,len(cod_prod))
     qnt.delete(0,len(quantos))
     sub_lista_prod_vend(pai,dados)
@@ -75,7 +75,7 @@ def mostra_nome(pai,nome,index):
     campo.grid(row = index, column = 2, sticky = W)
 
 def sub_lista_prod_vend(pai,dados):
-    cabecalhos = [u'Descrição', u'Valor Unitário','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
+    cabecalhos = [u'Código',u'Descrição', u'Valor Unitário','Quantidade','Valor Total'] #TODO pesquisar nome previamente e colocar o nome do produto aqui, ao inves do codigo
 
     tabela = ttk.Treeview(columns=cabecalhos, show="headings")
     scroll_v = ttk.Scrollbar(orient="vertical", command=tabela.yview)
@@ -139,12 +139,31 @@ def tela_cad_vendas(root):
     botao_incluir_prod.grid(row=2, column =4, sticky = W)
 
     sub_lista_prod_vend(frame_cad_vendas,dados)
+
+    campo6 = Label(frame_cad_vendas, text="Tipo da Venda:")
+    campo6.grid(row = 4, column = 0, sticky = W)
+
+    t_venda = IntVar()
+
+    Radiobutton(frame_cad_vendas, text="Normal", variable=t_venda, value=1).grid(row = 4, column = 1, sticky = W)
+    Radiobutton(frame_cad_vendas, text="Consignado", variable=t_venda, value=2).grid(row = 4, column = 2, sticky = W)
+
+    campo7 = Label(frame_cad_vendas, text="Tipo do Pagamento:")
+    campo7.grid(row = 5, column = 0, sticky = W)
+
+    pag_venda = IntVar()
+
+    Radiobutton(frame_cad_vendas, text="Dinheiro", variable=pag_venda, value=1).grid(row = 5, column = 1, sticky = W)
+    Radiobutton(frame_cad_vendas, text="Cartão", variable=pag_venda, value=2).grid(row = 5, column = 2, sticky = W)
+    Radiobutton(frame_cad_vendas, text="Cheque", variable=pag_venda, value=3).grid(row = 5, column = 3, sticky = W)
+
     
-    botao_enviar = Button(frame_cad_vendas,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_forn,{"classe":model.fornecedor,"nome_forn":nome_forn.get(), "dur_camp":dur_camp_forn.get()})) #passo os dados do formulario em um dicionario
-    botao_enviar.grid(row=4,column=6, columnspan=2, sticky=W, pady=10)
+    botao_enviar = Button(frame_cad_vendas,text="Cadastrar", command=lambda: controller.cadastrar(frame_cad_vendas,
+            {"classe":model.venda,"cpf_vendor":cpf_vendor.get(),"cpf_clie":cpf_clie.get(), "produtos":dados, "t_venda":t_venda.get(),"t_pag":pag_venda.get()})) #passo os dados do formulario em um dicionario
+    botao_enviar.grid(row=6,column=6, columnspan=2, sticky=W, pady=10)
     
-    botao_limpar = Button(frame_cad_vendas,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_forn))
-    botao_limpar.grid(row=4,column=5, sticky=E, pady=10)
+    botao_limpar = Button(frame_cad_vendas,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_vendas))
+    botao_limpar.grid(row=6,column=5, sticky=E, pady=10)
 
 #==============================================================================================================================================#
 

@@ -2,6 +2,7 @@
 
 import controller
 import datetime
+import view
 
 #TODO verificar duplicata de dados antes de salvar (todas as classes)
 #TODO verificar dados antes de salvar(vazio, preenchimento incorreto, etc)
@@ -128,4 +129,35 @@ class produto():
 
     def salvar(self):
             controller.grava('produtos',[self.codigo, self.forn_id, self.qnt, self.desc, self.pcompra, self.pvenda])
-    
+
+class venda():
+    vendor = 0
+    clie = 0
+    produtos = None
+    data = None
+    status = None                #recebera tipo da venda(t_venda)
+    pag_venda = None
+
+    def __init__(self,dados):
+        temp =  controller.busca("id","pessoas"," WHERE tipo = 1 and cpf="+dados["cpf_vendor"],"")
+        self.vendor = apaga(str(temp),"()[],")
+        temp = controller.busca("id","pessoas"," WHERE tipo = 0 and cpf="+dados["cpf_clie"],"")
+        self.clie = apaga(str(temp),"()[],")
+        self.produtos = dados["produtos"]
+        self.data = str(datetime.datetime.now().day)+"/"+str(datetime.datetime.now().month)+"/"+str(datetime.datetime.now().year)
+        self.status = dados["t_venda"]
+        self.pag_venda = dados["t_pag"]
+
+    def salvar(self):
+        id_venda = controller.grava('vendas',[self.clie,self.vendor,self.data,self.status,self.pag_venda]) 
+        for produto in self.produtos:
+                temp = controller.busca("qnt","produtos"," WHERE codigo="+produto[0],"")       
+                temp = apaga(str(temp),"()[],")
+                temp = int(temp) - int(produto[3])
+                if temp < 0:
+                    controller.exclui('vendas',' id = '+str(id_venda))
+                    view.popup_warning("Quantidade de itens insuficiente")
+                    break
+                else:
+                    controller.altera('produtos','qnt = '+str(temp),' codigo='+produto[0])
+                    controller.grava('produtos_venda',[id_venda,produto[0], produto[3],produto[4]])

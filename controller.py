@@ -28,9 +28,9 @@ def cria_banco():
     query.execute('''CREATE TABLE itens_campanha (id integer PRIMARY KEY AUTOINCREMENT, campanha_id integer, cod_prod integer, desconto real)''')
 
     query.execute('''CREATE TABLE vendas (id integer PRIMARY KEY AUTOINCREMENT, clie_id integer, vendor_id integer,
-                                            data text, valor_total real, status integer)''')
+                                            data text, status integer, t_pag integer)''')
 
-    query.execute('''CREATE TABLE produtos_venda (id integer PRIMARY KEY AUTOINCREMENT, venda_id integer, cod_prod integer, quant integer)''')
+    query.execute('''CREATE TABLE produtos_venda (id integer PRIMARY KEY AUTOINCREMENT, venda_id integer, cod_prod integer, quant integer,val_t real)''')
 
     conexao.commit()
 
@@ -47,6 +47,7 @@ def grava(tabela,dados):
         values = str(dados)
         values = values[1:len(values)-1]
         command = "INSERT INTO "+tabela+" VALUES (NULL, "+values+")"
+        print command
         query.execute(command)
         conexao.commit()
         row_id = query.lastrowid
@@ -60,7 +61,8 @@ def altera(tabela,dados, condicao):
     try:
         conexao = sql.connect('info.db')
         query = conexao.cursor()
-        command = "UPDATE "+tabela+" SET "+dados+" WHERE "+condicao 
+        command = "UPDATE "+tabela+" SET "+dados+" WHERE "+condicao
+        print command
         query.execute(command)
         conexao.commit()
         row_id = query.lastrowid
