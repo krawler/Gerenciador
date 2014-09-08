@@ -154,7 +154,7 @@ def cad_prod(root):
 
 def lista_forn(root):
     cabecalhos = ['ID', 'Nome', u'Duração Campanha']
-    dados = busca('id, nome, dur_camp','fornecedores',"where del='false'",'')
+    dados = busca('id, nome, dur_camp','fornecedores','WHERE not(del)','')
     viewListagem.tela_lista_forn(root,cabecalhos, dados)
 
 def lista_prod(root):
