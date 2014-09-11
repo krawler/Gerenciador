@@ -163,13 +163,13 @@ def lista_prod(root):
     viewListagem.tela_lista_forn(root,cabecalhos, dados)
 
 def lista_clie(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
-    dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
+    cabecalhos = ['ID', 'Nome','CPF', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
+    dados = busca('id, nome, cpf, email, endereco, tel_cel, tel_res, tel_com','pessoas','WHERE tipo=0','')
     viewListagem.tela_lista_clie(root,cabecalhos, dados)
 
 def lista_vend(root):
-    cabecalhos = ['ID', 'Nome', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
-    dados = busca('id, nome, email, endereco, tel_cel, tel_res, tel_com', 'pessoas', 'WHERE tipo=1','')
+    cabecalhos = ['ID', 'Nome', 'CPF', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']
+    dados = busca('id, nome, cpf, email, endereco, tel_cel, tel_res, tel_com', 'pessoas', 'WHERE tipo=1','')
     viewListagem.tela_lista_vend(root,cabecalhos, dados)
 
 

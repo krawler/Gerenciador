@@ -45,20 +45,21 @@ def mostra_dados_clie(event, tabela,pai):
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
     filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer função
-    filhos[3].insert(0, valores[5])     #tel res                        #carrega os valores da consulta do banco
-    filhos[5].insert(0, valores[4])     #tel cel
-    filhos[7].insert(0, valores[6])     #tel com
-    filhos[9].insert(0, valores[2])     #email
-    filhos[11].insert(0, valores[3])    #endereco
+    filhos[3].insert(0, valores[2])     #cpf
+    filhos[5].insert(0, valores[6])     #tel res                        #carrega os valores da consulta do banco
+    filhos[7].insert(0, valores[5])     #tel cel
+    filhos[9].insert(0, valores[7])     #tel com
+    filhos[11].insert(0, valores[3])     #email
+    filhos[13].insert(0, valores[4])    #endereco
 
-    filhos[12].configure(text="Alterar")
-    filhos[12].configure(command=lambda: controller.alterar("lista_clie",popup, pai, {"classe":model.pessoa,"id":valores[0], "nome_pessoa":filhos[1].get(),
+    filhos[14].configure(text="Alterar")
+    filhos[14].configure(command=lambda: controller.alterar("lista_clie",popup, pai, {"classe":model.pessoa,"id":valores[0], "nome_pessoa":filhos[1].get(),
                                                                 "email":filhos[9].get(),"endereco":filhos[11].get(),"tel_cel":filhos[5].get(),
                                                                  "tel_res":filhos[3].get(),"tel_com":filhos[7].get(),"tipo":0}))
 
     botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir("lista_clie",popup, pai,{"classe":model.pessoa,"id":valores[0],"nome_pessoa": '',
                                                                 "email": '',"endereco": '',"tel_cel": '', "tel_res": '',"tel_com": '',"tipo": 0}))
-    botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
+    botao_excluir.grid(row=8,column=1, sticky=W, pady=10)
 
 
 def mostra_dados_vend(event, tabela, pai):
@@ -73,21 +74,22 @@ def mostra_dados_vend(event, tabela, pai):
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
-    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer funcao
-    filhos[3].insert(0, valores[5])     #tel res                        #carrega os valores da consulta do banco
-    filhos[5].insert(0, valores[4])     #tel cel
-    filhos[7].insert(0, valores[6])     #tel com
-    filhos[9].insert(0, valores[2])     #email
-    filhos[11].insert(0, valores[3])    #endereco
+    filhos[1].insert(0, valores[1])     #nome                           #TODO melhorar => fazer função
+    filhos[3].insert(0, valores[2])     #cpf
+    filhos[5].insert(0, valores[6])     #tel res                        #carrega os valores da consulta do banco
+    filhos[7].insert(0, valores[5])     #tel cel
+    filhos[9].insert(0, valores[7])     #tel com
+    filhos[11].insert(0, valores[3])     #email
+    filhos[13].insert(0, valores[4])    #endereco
 
     comissoes = []
-    filhos[13].configure(command= lambda: viewCadastros.inclui_comissao(comissoes,valores[0]))
+    filhos[15].configure(command= lambda: viewCadastros.inclui_comissao(comissoes,valores[0]))
 
-    filhos[14].configure(text="Alterar")
-    filhos[14].configure(command=lambda: controller.alterar("lista_vend", popup, pai, {"classe":model.vendedor, "id":valores[0], "nome_pessoa":filhos[1].get(), "email":filhos[9].get(),"endereco":filhos[11].get(), "tel_cel":filhos[5].get(), "tel_res":filhos[3].get(),"tel_com":filhos[7].get(),"tipo":1,"comissoes":comissoes }))
+    filhos[16].configure(text="Alterar")
+    filhos[16].configure(command=lambda: controller.alterar("lista_vend", popup, pai, {"classe":model.vendedor, "id":valores[0], "nome_pessoa":filhos[1].get(), "email":filhos[9].get(),"endereco":filhos[11].get(), "tel_cel":filhos[5].get(), "tel_res":filhos[3].get(),"tel_com":filhos[7].get(),"tipo":1,"comissoes":comissoes }))
 
     botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir(filho[0],popup, pai,{"classe":model.vendedor, "id":valores[0],"nome_pessoa": '', "email": '',"endereco": '',"tel_cel": '', "tel_res": '',"tel_com": '',"tipo": 1}))
-    botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
+    botao_excluir.grid(row=8,column=1, sticky=W, pady=10)
 
 
 def mostra_dados_prod(event, tabela,pai):   
