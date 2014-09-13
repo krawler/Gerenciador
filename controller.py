@@ -160,7 +160,7 @@ def lista_forn(root):
 def lista_prod(root):
     cabecalhos = ['ID', u'Código', 'Fornecedor', 'Quantidade', u'Descrição' ,u'Preço Compra', u'Preço Venda']   #pego o nome do fornecedor usando inner join no forn_id
     dados = busca('produtos.id, produtos.codigo, fornecedores.nome, produtos.qnt, produtos.descr, produtos.pcompra, produtos.pvenda','produtos','',' INNER JOIN fornecedores ON produtos.forn_id = fornecedores.id')
-    viewListagem.tela_lista_forn(root,cabecalhos, dados)
+    viewListagem.tela_lista_prod(root,cabecalhos, dados)
 
 def lista_clie(root):
     cabecalhos = ['ID', 'Nome','CPF', 'Email', u'Endereço', 'Telefone Celular', u'Telefone residencial', 'Telefone Comercial']

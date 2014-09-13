@@ -479,3 +479,5 @@ def tela_cad_prod(root):
     botao_limpar = Button(frame_cad_prod,text="Limpar", command=lambda: view.limpa_entradas(frame_cad_prod))
     botao_limpar.grid(row=7,column=3, sticky=E, pady=10)
 
+    return var_forn
+

@@ -100,20 +100,12 @@ def mostra_dados_prod(event, tabela,pai):
     popup = Toplevel()
     popup.title("Gerenciador - Dados Produto")
 
-    viewCadastros.tela_cad_prod(popup)
+    var_forn = viewCadastros.tela_cad_prod(popup)
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
     filhos[1].insert(0, valores[1]) # codigo
-    filhos[3].insert(0, valores[2]) # Fornecedor
-    #try:
-        #dados = controller.busca("nome", "fornecedores","","")
-        #var_forn = StringVar(frame_cad_prod)
-        #var_forn.set(dados[0])
-        #forn_prod = apply(OptionMenu, (frame_cad_prod,var_forn) + tuple(dados))
-    #except:
-        #var_forn.set("")
-        #forn_prod = OptionMenu(frame_cad_prod,var_forn,"")
+    var_forn.set(valores[2])        #fornecedor
     filhos[5].insert(0, valores[3]) # quantidade
     filhos[7].insert(0, valores[4]) # descricao
     filhos[9].insert(0, valores[5]) # pcompra
@@ -123,7 +115,7 @@ def mostra_dados_prod(event, tabela,pai):
     filhos[12].configure(command=lambda: controller.alterar("lista_forn", popup, pai, {"classe":model.fornecedor,"id":valores[0],"nome_forn":filhos[1].get(), "dur_camp":filhos[3].get()}))
 
     botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir("lista_forn",popup, pai,{"classe":model.fornecedor,"id":valores[0],"nome_forn":'', "dur_camp":''}))
-    botao_excluir.grid(row=2,column=0, sticky=E, pady=10)
+    botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
 
 
 def tela_lista_forn(root,cabecalhos, dados):
