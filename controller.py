@@ -21,7 +21,7 @@ def cria_banco():
     query.execute('''CREATE TABLE comissoes (id integer PRIMARY KEY AUTOINCREMENT,vendedor_id integer,fornecedor_id integer,comissao integer)''')
 
     query.execute('''CREATE TABLE produtos (id integer PRIMARY KEY AUTOINCREMENT,codigo integer,
-                                            forn_id integer,qnt integer,descr text, pcompra integer, pvenda integer)''')
+                                            forn_id integer,qnt integer,descr text, pcompra real, pvenda real)''')
 
     query.execute('''CREATE TABLE campanhas (id integer PRIMARY KEY AUTOINCREMENT, forn_id integer, data_inic text, data_fim text)''')
 
@@ -159,7 +159,8 @@ def lista_forn(root):
 
 def lista_prod(root):
     cabecalhos = ['ID', u'Código', 'Fornecedor', 'Quantidade', u'Descrição' ,u'Preço Compra', u'Preço Venda']   #pego o nome do fornecedor usando inner join no forn_id
-    dados = busca('produtos.id, produtos.codigo, fornecedores.nome, produtos.qnt, produtos.descr, produtos.pcompra, produtos.pvenda','produtos','',' INNER JOIN fornecedores ON produtos.forn_id = fornecedores.id')
+    dados = busca('produtos.id, produtos.codigo, fornecedores.nome, produtos.qnt, produtos.descr, produtos.pcompra, produtos.pvenda','produtos',
+                  '',' INNER JOIN fornecedores ON produtos.forn_id = fornecedores.id')
     viewListagem.tela_lista_prod(root,cabecalhos, dados)
 
 def lista_clie(root):

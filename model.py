@@ -116,19 +116,28 @@ class produto():
 
     def __init__(self,dados):
         self.codigo = dados["codigo"]
-        temp = dados["fornecedor"]
-        temp = apaga(temp,"(),")
-        dado = controller.busca("id", "fornecedores", "WHERE nome = "+temp, "")
-        dado = str(dado)
-        dado = apaga(dado,"[](),")
-        self.forn_id = dado[0]
+        if not dados["fornecedor"]:
+            self.forn_id = 0
+        else:
+            temp = dados["fornecedor"]
+            temp = apaga(temp,"(),")
+            dado = controller.busca("id", "fornecedores", "WHERE nome = '"+temp+"'", "")
+            dado = str(dado)
+            dado = apaga(dado,"[](),")
+            self.forn_id = dado[0]
         self.qnt = dados["qnt"]
         self.desc = dados["desc"]
         self.pcompra = dados["pcompra"]
         self.pvenda = dados["pvenda"]
 
     def salvar(self):
-            controller.grava('produtos',[self.codigo, self.forn_id, self.qnt, self.desc, self.pcompra, self.pvenda])
+        controller.grava('produtos',[self.codigo, self.forn_id, self.qnt, self.desc, self.pcompra, self.pvenda])
+
+    def alterar(self,ident):
+        controller.altera('produtos','codigo = "'+self.codigo+'", forn_id="'+self.forn_id+'", qnt="'+self.qnt+'", descr="'+self.desc+
+                                    '", pcompra="'+self.pcompra+'", pvenda="'+self.pvenda+'"',' id='+str(ident))
+    def excluir(self,ident):
+        controller.exclui('produtos',' id='+str(ident))
 
 class venda():
     vendor = 0

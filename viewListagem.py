@@ -104,17 +104,24 @@ def mostra_dados_prod(event, tabela,pai):
 
     filho = popup.winfo_children()
     filhos = filho[0].winfo_children()
-    filhos[1].insert(0, valores[1]) # codigo
-    var_forn.set(valores[2])        #fornecedor
-    filhos[5].insert(0, valores[3]) # quantidade
+    temp = str(valores[1])
+    for index in range(len(temp)):                       #necessario  por causa da validacao do campo 
+        filhos[1].insert(index, temp[index])            #codigo
+    var_forn.set(valores[2])                                #fornecedor
+    temp = str(valores[3])
+    for index in range(len(temp)):                       #necessario  por causa da validacao do campo 
+        filhos[5].insert(index, temp[index]) # quantidade
     filhos[7].insert(0, valores[4]) # descricao
     filhos[9].insert(0, valores[5]) # pcompra
     filhos[11].insert(0, valores[6]) # pvenda
 
     filhos[12].configure(text="Alterar")
-    filhos[12].configure(command=lambda: controller.alterar("lista_forn", popup, pai, {"classe":model.fornecedor,"id":valores[0],"nome_forn":filhos[1].get(), "dur_camp":filhos[3].get()}))
+    filhos[12].configure(command=lambda: controller.alterar("lista_prod", popup, pai, {"classe":model.produto,
+                        "id":valores[0], "codigo": filhos[1].get(),"fornecedor": var_forn.get(),"qnt": filhos[5].get(),"desc": filhos[7].get(),
+                                                                 "pcompra": filhos[9].get(),"pvenda": filhos[11].get()}))
 
-    botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir("lista_forn",popup, pai,{"classe":model.fornecedor,"id":valores[0],"nome_forn":'', "dur_camp":''}))
+    botao_excluir = Button(filho[0], text="Excluir", command=lambda: controller.excluir("lista_prod",popup, pai,{"classe":model.produto,
+                    "id":valores[0],"codigo": "","fornecedor": "","qnt": "","desc": "", "pcompra": "","pvenda": ""}))
     botao_excluir.grid(row=7,column=0, sticky=E, pady=10)
 
 
